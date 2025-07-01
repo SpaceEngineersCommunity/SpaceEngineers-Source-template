@@ -1,0 +1,25 @@
+name: template cleanup
+
+on:
+  push:
+
+jobs:
+  template-cleanup:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.run_number == 1 && github.repository != 'SpaceEngineersCommunity/SpaceEngineers-Source-template'
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: remove files
+        run: rm -f README.md .github/workflows/template_cleanup.yml
+
+      - name: push
+        run: |
+          git config user.name 'cleanup'
+          git config user.email 'no@email'
+          git commit -am 'template cleanup'
+          git push
